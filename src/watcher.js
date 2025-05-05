@@ -28,10 +28,17 @@ module.exports = {
             persistent: true
         });
 
+        // On add a new file, log it and process the change in Parser
         watcher
             .on('add', (path) => {
+                console.info();
+                console.info("File was added to " + path + ", attempting to parse it.");
                 parser.processChange(path);
             })
-            .on('error', (err) => { });
+            .on('error', (err) => {
+                console.info();
+                console.warn("There was an error when watching the watched input folder: " + err);
+                console.info();
+             });
     }
 };
