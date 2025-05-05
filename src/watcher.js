@@ -28,6 +28,7 @@ module.exports = {
             persistent: true
         });
 
+        // On add a new file, log it and process the change in Parser
         watcher
             .on('add', (path) => {
                 console.info();

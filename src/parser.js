@@ -16,10 +16,12 @@ module.exports = {
         this.processed = proc;
     },
     processChange: function (file) {
+        // Output JSON file
         const outputFile = path.resolve(this.output, path.basename(file).replace('.csv', '.json'));
         console.info();
         console.info("Output file will be " + outputFile);
         console.info();
+        // Inputted CSV File
         const processedFile = path.resolve(this.processed, path.basename(file));
         console.info();
         console.info("Processed file will be " + processedFile);
@@ -35,10 +37,23 @@ module.exports = {
                 rows.push(row);
             })
             .on('end', () => {
-                fs.copyFileSync(file, processedFile);
+
+                // Rename was breaking when trying to perform operation in container
+                // Switched to CopyFileSync and got rid of callback
+                // Switched to try catch because no callback for copyfilesync
+                try {
+                    fs.copyFileSync(file, processedFile);
+                }
+                catch (err) {
+                    console.info();
+                    console.error("There was an error copying the file: " + err);
+                    console.info();
+                    return;
+                }
 
 
 
+                // Write the JSON File
                 fs.writeFile(outputFile, JSON.stringify(rows, null, 2), (err) => {
                     if (err) {
                         console.info();
@@ -54,6 +69,7 @@ module.exports = {
                 console.info();
                 console.error("There was an error when parsing the file: " + file + " : " + err);
                 console.info();
+                return new Error("Unparsable File");
             });
     }
 };
