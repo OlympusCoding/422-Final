@@ -12,6 +12,7 @@ const watched = path.join(__dirname, config.watched);
 const output = path.join(__dirname, config.output);
 const processed = path.join(__dirname, config.processed);
 
+
 console.info();
 // The following ANSI code sets the color, followed by the string to set, then a reset code
 // Using the following pattern:
@@ -21,15 +22,28 @@ console.info();
 
 // Create the necessary directories if necessary
 if (!fs.existsSync(watched)) {
+    console.log();
+    console.log('\x1b[38;2;0;0;170m%s\x1b[0m', 'Creating Watched Folder');
+    console.log();
     fs.mkdirSync(watched);
 }
 
 if (!fs.existsSync(output)) {
+    console.log();
+    console.log('\x1b[38;2;0;0;170m%s\x1b[0m', 'Creating Output Folder');
+    console.log();
     fs.mkdirSync(output);
 }
 
 if (!fs.existsSync(processed)) {
+    console.log();
+    console.log('\x1b[38;2;0;0;170m%s\x1b[0m', 'Creating Processed Folder');
+    console.log();
     fs.mkdirSync(processed);
 }
 
 watcher.watch(watched, output, processed);
+
+
+
+
